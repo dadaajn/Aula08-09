@@ -3,586 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Ping Pong - Python</title>
-
-    <!-- Brython: Python rodando diretamente no navegador -->
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.13.2/brython.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.13.2/brython_stdlib.js"></script>
-
+    <title>Cidades do Mundo</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            margin: 0;
-            min-height: 100vh;
-            background: #080808;
-            color: white;
             font-family: Arial, sans-serif;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
         }
-
         h1 {
-            color: #00ff88;
-            font-size: 42px;
-            margin: 10px;
-            text-shadow: 0 0 15px #00ff88;
+            text-align: center;
+            color: #333;
         }
-
-        #game {
-            background: #111;
-            border: 3px solid #00ff88;
-            border-radius: 12px;
-            box-shadow:
-                0 0 20px #00ff88,
-                inset 0 0 30px #000;
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
-
-        .controles {
-            margin-top: 15px;
-            color: #ccc;
-            font-size: 18px;
-        }
-
-        button {
-            margin-top: 15px;
-            padding: 12px 30px;
-            border: none;
+        .cidade-card {
+            background: #fff;
             border-radius: 8px;
-
-            background: #00ff88;
-            color: #000;
-
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.2s;
         }
-
-        button:hover {
-            background: #00cc6a;
-            transform: scale(1.05);
+        .cidade-card:hover {
+            transform: scale(1.03);
+        }
+        .cidade-card h2 {
+            font-size: 1.2rem;
+            color: #444;
+            padding: 10px 0;
+            margin: 0;
+        }
+        .cidade-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
         }
     </style>
 </head>
+<body>
 
-<body onload="brython()">
+    <h1>Cidades Turísticas</h1>
+    
+    <div class="galeria">
+        <!-- Cidade 1: Paris -->
+        <div class="cidade-card">
+            <h2>Paris</h2>
+            <a href="https://wikipedia.org" target="_blank">
+                <img src="https://unsplash.com" alt="Torre Eiffel em Paris">
+            </a>
+        </div>
 
-    <h1>🏓 Ping Pong Python</h1>
+        <!-- Cidade 2: Nova Iorque -->
+        <div class="cidade-card">
+            <h2>Nova Iorque</h2>
+            <a href="https://wikipedia.org" target="_blank">
+                <img src="https://unsplash.com" alt="Estátua da Liberdade em Nova Iorque">
+            </a>
+        </div>
 
-    <canvas id="game" width="900" height="500"></canvas>
+        <!-- Cidade 3: Tóquio -->
+        <div class="cidade-card">
+            <h2>Tóquio</h2>
+            <a href="https://wikipedia.org" target="_blank">
+                <img src="https://unsplash.com" alt="Ruas iluminadas de Tóquio">
+            </a>
+        </div>
 
-    <div class="controles">
-        Jogador 1: <b>W / S</b>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        Jogador 2: <b>↑ / ↓</b>
+        <!-- Cidade 4: Rio de Janeiro -->
+        <div class="cidade-card">
+            <h2>Rio de Janeiro</h2>
+            <a href="https://wikipedia.org" target="_blank">
+                <img src="https://unsplash.com" alt="Cristo Redentor no Rio de Janeiro">
+            </a>
+        </div>
+
+        <!-- Cidade 5: Roma -->
+        <div class="cidade-card">
+            <h2>Roma</h2>
+            <a href="https://wikipedia.org" target="_blank">
+                <img src="https://unsplash.com" alt="Coliseu de Roma">
+            </a>
+        </div>
     </div>
-
-    <button id="reiniciar">🔄 Reiniciar</button>
-
-
-    <!-- TODO O JOGO ABAIXO É PYTHON -->
-    <script type="text/python">
-
-from browser import document, window
-import random
-import math
-
-
-# ============================================================
-# CONFIGURAÇÕES
-# ============================================================
-
-LARGURA = 900
-ALTURA = 500
-
-canvas = document["game"]
-ctx = canvas.getContext("2d")
-
-
-# ============================================================
-# JOGADORES
-# ============================================================
-
-jogador1 = {
-    "x": 25,
-    "y": ALTURA / 2 - 50,
-    "largura": 18,
-    "altura": 100,
-    "velocidade": 7
-}
-
-jogador2 = {
-    "x": LARGURA - 43,
-    "y": ALTURA / 2 - 50,
-    "largura": 18,
-    "altura": 100,
-    "velocidade": 7
-}
-
-
-# ============================================================
-# BOLA
-# ============================================================
-
-bola = {
-    "x": LARGURA / 2,
-    "y": ALTURA / 2,
-    "raio": 9,
-    "vx": 6,
-    "vy": 4
-}
-
-
-# ============================================================
-# PLACAR
-# ============================================================
-
-pontos1 = 0
-pontos2 = 0
-
-teclas = set()
-# ============================================================
-# PODERES
-# ============================================================
-
-poderes = []
-
-tipos_poder = ["🔥", "❄️", "⚡", "💣"]
-
-poder_ativo = None
-poder_timer = 0
-
-tempo_proximo_poder = 180
-
-
-# ============================================================
-# TECLADO
-# ============================================================
-
-def tecla_down(evento):
-    teclas.add(evento.key)
-
-
-def tecla_up(evento):
-    if evento.key in teclas:
-        teclas.remove(evento.key)
-
-
-window.addEventListener("keydown", tecla_down)
-window.addEventListener("keyup", tecla_up)
-
-
-# ============================================================
-# RESET DA BOLA
-# ============================================================
-
-def reiniciar_bola(direcao=None):
-
-    bola["x"] = LARGURA / 2
-    bola["y"] = ALTURA / 2
-
-    if direcao is None:
-        direcao = random.choice([-1, 1])
-
-    bola["vx"] = 6 * direcao
-    bola["vy"] = random.choice([-4, -3, 3, 4])
-
-
-# ============================================================
-# RESET DO JOGO
-# ============================================================
-
-def reiniciar(evento=None):
-
-    global pontos1, pontos2
-
-    pontos1 = 0
-    pontos2 = 0
-
-    jogador1["y"] = ALTURA / 2 - 50
-    jogador2["y"] = ALTURA / 2 - 50
-
-    reiniciar_bola()
-
-
-document["reiniciar"].bind("click", reiniciar)
-
-
-# ============================================================
-# COLISÃO
-# ============================================================
-
-def colisao(raquete):
-
-    return (
-        bola["x"] - bola["raio"] < raquete["x"] + raquete["largura"]
-        and
-        bola["x"] + bola["raio"] > raquete["x"]
-        and
-        bola["y"] - bola["raio"] < raquete["y"] + raquete["altura"]
-        and
-        bola["y"] + bola["raio"] > raquete["y"]
-    )
-
-
-# ============================================================
-# ATUALIZAÇÃO DO JOGO
-# ============================================================
-
-def atualizar(global tempo_proximo_poder
-global poder_timer
-
-# Contador para criar poderes
-tempo_proximo_poder -= 1
-
-if tempo_proximo_poder <= 0:
-
-    criar_poder()
-
-    tempo_proximo_poder = random.randint(240, 420)
-
-
-# Verifica se a bola pegou um poder
-pegar_poder()
-
-
-# Tempo do poder
-if poder_timer > 0:
-
-    poder_timer -= 1
-
-else:
-
-    if poder_ativo is not None:
-
-        bola["raio"] = 9
-
-        jogador1["velocidade"] = 7
-        jogador2["velocidade"] = 7
-
-        poder_ativo = None
-):
-
-    global pontos1, pontos2
-
-    # -----------------------------
-    # Jogador 1
-    # -----------------------------
-
-    if "w" in teclas or "W" in teclas:
-        jogador1["y"] -= jogador1["velocidade"]
-
-    if "s" in teclas or "S" in teclas:
-        jogador1["y"] += jogador1["velocidade"]
-
-
-    # -----------------------------
-    # Jogador 2
-    # -----------------------------
-
-    if "ArrowUp" in teclas:
-        jogador2["y"] -= jogador2["velocidade"]
-
-    if "ArrowDown" in teclas:
-        jogador2["y"] += jogador2["velocidade"]
-
-
-    # -----------------------------
-    # Limites das raquetes
-    # -----------------------------
-
-    jogador1["y"] = max(
-        0,
-        min(
-            ALTURA - jogador1["altura"],
-            jogador1["y"]
-        )
-    )
-
-    jogador2["y"] = max(
-        0,
-        min(
-            ALTURA - jogador2["altura"],
-            jogador2["y"]
-        )
-    )
-
-
-    # -----------------------------
-    # Movimento da bola
-    # -----------------------------
-
-    bola["x"] += bola["vx"]
-    bola["y"] += bola["vy"]
-
-
-    # -----------------------------
-    # Teto
-    # -----------------------------
-
-    if bola["y"] - bola["raio"] <= 0:
-
-        bola["y"] = bola["raio"]
-        bola["vy"] *= -1
-
-
-    # -----------------------------
-    # Chão
-    # -----------------------------
-
-    if bola["y"] + bola["raio"] >= ALTURA:
-
-        bola["y"] = ALTURA - bola["raio"]
-        bola["vy"] *= -1
-
-
-    # -----------------------------
-    # Colisão jogador 1
-    # -----------------------------
-
-    if colisao(jogador1) and bola["vx"] < 0:
-
-        bola["x"] = (
-            jogador1["x"]
-            + jogador1["largura"]
-            + bola["raio"]
-        )
-
-        distancia = (
-            bola["y"]
-            - (
-                jogador1["y"]
-                + jogador1["altura"] / 2
-            )
-        )
-
-        bola["vy"] = distancia / 8
-
-        bola["vx"] = abs(bola["vx"]) + 0.3
-
-
-    # -----------------------------
-    # Colisão jogador 2
-    # -----------------------------
-
-    if colisao(jogador2) and bola["vx"] > 0:
-
-        bola["x"] = (
-            jogador2["x"]
-            - bola["raio"]
-        )
-
-        distancia = (
-            bola["y"]
-            - (
-                jogador2["y"]
-                + jogador2["altura"] / 2
-            )
-        )
-
-        bola["vy"] = distancia / 8
-
-        bola["vx"] = -(
-            abs(bola["vx"]) + 0.3
-        )
-
-
-    # -----------------------------
-    # Ponto jogador 2
-    # -----------------------------
-
-    if bola["x"] < -20:
-
-        pontos2 += 1
-        reiniciar_bola(-1)
-
-
-    # -----------------------------
-    # Ponto jogador 1
-    # -----------------------------
-
-    if bola["x"] > LARGURA + 20:
-
-        pontos1 += 1
-        reiniciar_bola(1)
-
-
-# ============================================================
-# DESENHO
-# ============================================================
-
-def desenhar(# ============================================================
-# DESENHA PODERES
-# ============================================================
-
-ctx.font = "30px Arial"
-ctx.textAlign = "center"
-
-for poder in poderes:
-
-    # Brilho
-    ctx.shadowBlur = 20
-
-    if poder["tipo"] == "🔥":
-        ctx.shadowColor = "#ff3300"
-
-    elif poder["tipo"] == "❄️":
-        ctx.shadowColor = "#00ccff"
-
-    elif poder["tipo"] == "⚡":
-        ctx.shadowColor = "#ffff00"
-
-    elif poder["tipo"] == "💣":
-        ctx.shadowColor = "#ff00ff"
-
-    ctx.fillText(
-        poder["tipo"],
-        poder["x"],
-        poder["y"] + 10
-    )
-
-ctx.shadowBlur = 0
-):
-
-    # Fundo
-    ctx.fillStyle = "#0b0b0b"
-    ctx.fillRect(
-        0,
-        0,
-        LARGURA,
-        ALTURA
-    )
-
-
-    # -----------------------------
-    # Linha central
-    # -----------------------------
-
-    ctx.strokeStyle = "#333333"
-    ctx.lineWidth = 3
-
-    ctx.setLineDash([12, 15])
-
-    ctx.beginPath()
-
-    ctx.moveTo(
-        LARGURA / 2,
-        0
-    )
-
-    ctx.lineTo(
-        LARGURA / 2,
-        ALTURA
-    )
-
-    ctx.stroke()
-
-    ctx.setLineDash([])
-
-
-    # -----------------------------
-    # Raquete 1
-    # -----------------------------
-
-    ctx.fillStyle = "#00ff88"
-
-    ctx.shadowColor = "#00ff88"
-    ctx.shadowBlur = 15
-
-    ctx.fillRect(
-        jogador1["x"],
-        jogador1["y"],
-        jogador1["largura"],
-        jogador1["altura"]
-    )
-
-
-    # -----------------------------
-    # Raquete 2
-    # -----------------------------
-
-    ctx.fillStyle = "#ff3cac"
-
-    ctx.shadowColor = "#ff3cac"
-
-    ctx.fillRect(
-        jogador2["x"],
-        jogador2["y"],
-        jogador2["largura"],
-        jogador2["altura"]
-    )
-
-
-    # -----------------------------
-    # Bola
-    # -----------------------------
-
-    ctx.beginPath()
-
-    ctx.fillStyle = "#ffffff"
-
-    ctx.shadowColor = "#ffffff"
-    ctx.shadowBlur = 20
-
-    ctx.arc(
-        bola["x"],
-        bola["y"],
-        bola["raio"],
-        0,
-        math.pi * 2
-    )
-
-    ctx.fill()
-
-
-    # Desliga sombra
-    ctx.shadowBlur = 0
-
-
-    # -----------------------------
-    # Placar
-    # -----------------------------
-
-    ctx.fillStyle = "#ffffff"
-
-    ctx.font = "bold 64px Arial"
-    ctx.textAlign = "center"
-
-    ctx.fillText(
-        str(pontos1),
-        LARGURA / 2 - 70,
-        70
-    )
-
-    ctx.fillText(
-        str(pontos2),
-        LARGURA / 2 + 70,
-        70
-    )
-
-
-# ============================================================
-# LOOP DO JOGO
-# ============================================================
-
-def jogo(timestamp):
-
-    atualizar()
-    desenhar()
-
-    window.requestAnimationFrame(jogo)
-
-
-# Começa o jogo
-window.requestAnimationFrame(jogo)
-
-    </script>
 
 </body>
 </html>

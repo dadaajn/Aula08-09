@@ -3,69 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minhas Cinco Cidades</title>
-    <!-- Link para o arquivo CSS do Exercício 3 -->
+    <title>Exercício 3 - Layout Semântico</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Exercício 3: Uma barra superior de título -->
+    <!-- Barra superior de título -->
     <header>
         <h1>Minhas Cinco Cidades</h1>
     </header>
 
-    <div class="container">
-        <!-- Exercício 3: O índice em uma barra lateral -->
-        <nav class="sidebar">
+    <div class="container-layout">
+        <!-- Índice em uma barra lateral -->
+        <aside>
             <h2>Índice</h2>
-            <!-- Exercício 2: O índice deve ser formado por thumbnails em uma tabela -->
             <table>
-                <!-- Linha 1: Cidade 1 -->
                 <tr>
                     <td>
-                        <!-- Exercício 2: Quando o usuário clicar no thumbnail, abre a pág da Wikipédia no iframe -->
-                        <a href="https://pt.wikipedia.org/wiki/Paris" target="visor">
-                            <img src="paris.jpg" alt="Paris" width="200">
+                        <a href="https://wikipedia.org" target="visor-3">
+                            <img src="paris.avif" alt="Paris">
                         </a>
                     </td>
                 </tr>
-                <!-- Linha 2: Cidade 2 -->
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor">
-                            <img src="nova_iorque.jpg" alt="Nova Iorque" width="200">
+                        <a href="https://wikipedia.org" target="visor-3">
+                            <img src="nova-york.jpg" alt="Nova Iorque">
                         </a>
                     </td>
                 </tr>
-                <!-- Linha 3: Cidade 3 -->
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor">
-                            <img src="toquio.jpg" alt="Tóquio" width="200">
+                        <a href="https://wikipedia.org" target="visor-3">
+                            <img src="toquio.jpg" alt="Tóquio">
                         </a>
                     </td>
                 </tr>
-                <!-- Linha 4: Cidade 4 -->
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor">
-                            <img src="londres.jpg" alt="Londres" width="200">
+                        <a href="https://wikipedia.org" target="visor-3">
+                            <img src="londres.jpeg" alt="Londres">
                         </a>
                     </td>
                 </tr>
-                <!-- Linha 5: Cidade 5 -->
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor">
-                            <img src="roma.jpg" alt="Roma" width="200">
+                        <a href="https://wikipedia.org" target="visor-3">
+                            <img src="roma.jpg" alt="Roma">
                         </a>
                     </td>
                 </tr>
             </table>
-        </nav>
+        </aside>
 
-        <!-- Exercício 3: O iframe em um campo à direita do índice -->
-        <main class="content">
-            <!-- Exercício 2: Inserir um IFrame após o índice (com o name correspondente ao target dos links) -->
-            <iframe name="visor" width="800" height="600" src="https://pt.wikipedia.org/wiki/Paris"></iframe>
+        <!-- Campo à direita do índice -->
+        <main>
+            <iframe name="visor-3" src="https://wikipedia.org"></iframe>
         </main>
+    </div>
+
+</body>
+</html>

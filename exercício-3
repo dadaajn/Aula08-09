@@ -8,58 +8,58 @@
 </head>
 <body>
 
-    <!-- Barra superior de título -->
     <header>
         <h1>Minhas Cinco Cidades</h1>
     </header>
 
-    <div class="container-layout">
-        <!-- Índice em uma barra lateral -->
-        <aside>
+    <div class="container">
+        
+        <nav>
             <h2>Índice</h2>
             <table>
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor-3">
-                            <img src="paris.avif" alt="Paris">
+                        <a href="https://pt.wikipedia.org/wiki/Paris" target="visor">
+                            <img src="paris.jpg" alt="Paris" width="200">
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor-3">
-                            <img src="nova-york.jpg" alt="Nova Iorque">
+                        <a href="https://pt.wikipedia.org/wiki/Londres" target="visor">
+                            <img src="londres.jpg" alt="Londres" width="200">
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor-3">
-                            <img src="toquio.jpg" alt="Tóquio">
+                        <a href="https://pt.wikipedia.org/wiki/Roma" target="visor">
+                            <img src="roma.jpg" alt="Roma" width="200">
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor-3">
-                            <img src="londres.jpeg" alt="Londres">
+                        <a href="https://pt.wikipedia.org/wiki/T%C3%B3quio" target="visor">
+                            <img src="toquio.jpg" alt="Tóquio" width="200">
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="https://wikipedia.org" target="visor-3">
-                            <img src="roma.jpg" alt="Roma">
+                        <a href="https://pt.wikipedia.org/wiki/Nova_Iorque" target="visor">
+                            <img src="nova-york.jpg" alt="Nova York" width="200">
                         </a>
                     </td>
                 </tr>
             </table>
-        </aside>
+        </nav>
 
-        <!-- Campo à direita do índice -->
+        <!-- Campo à direita contendo o iFrame -->
         <main>
-            <iframe name="visor-3" src="https://wikipedia.org"></iframe>
+            <iframe name="visor" title="Página da Wikipedia"></iframe>
         </main>
+
     </div>
 
 </body>
